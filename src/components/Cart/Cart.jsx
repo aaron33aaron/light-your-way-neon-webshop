@@ -5,13 +5,17 @@ import { Container, Typography, Button, Grid } from '@material-ui/core';
 import useStyles from './styles';
 import CartItem from './CartItem/CartItem';
 
-const Cart = ({ cart }) => {
+import { Link } from 'react-router-dom';
+
+const Cart = ({ cart, handleUpdateCartQty, handleRemoveFromCart, handleEmptyCart }) => {
     // setting constant classes to useStyles import
     const classes = useStyles;
 
     // Setting constant variable EmptyCart to function that returns jsx 
     const EmptyCart = () => (
-        <Typography variant="subtitle1">You have no items in your shopping cart, start adding some !</Typography>
+        <Typography variant="subtitle1">You have no items in your shopping cart,
+            <Link to="/" className={classes.link}> start adding some</Link>!
+        </Typography>
     );
 
     // Setting constant variable FilledCart to function that returns jsx 
@@ -21,7 +25,7 @@ const Cart = ({ cart }) => {
                 {cart.line_items.map((item) => (
                     // Grid will be full width on XS devices, small devices will show 1/3
                     <Grid item xs={12} sm={4} key={item.id}>
-                        <CartItem item={item} />
+                        <CartItem item={item} onUpdateCartQty={handleUpdateCartQty} onRemoveFromCart={handleRemoveFromCart}/>
                     </Grid> 
                 ))}
             </Grid>
@@ -29,7 +33,7 @@ const Cart = ({ cart }) => {
                 { /* Displaying the total cost of all cart items */ }
                 <Typography variant="h4">Subtotal: { cart.subtotal.formatted_with_symbol }</Typography>  
                 <div>
-                    <Button className={classes.emptyButton} size="large" type="button" variant="contained" color="secondary">Empty Cart</Button>
+                    <Button className={classes.emptyButton} size="large" type="button" variant="contained" color="secondary" onClick={handleEmptyCart}>Empty Cart</Button>
                     <Button className={classes.checkoutButton} size="large" type="button" variant="contained" color="primary">Checkout</Button>
                 </div>
             </div>

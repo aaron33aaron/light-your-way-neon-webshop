@@ -26,10 +26,37 @@ const App = () => {
       // async function with product id and quantity of product as parameters
       const handleAddToCart = async (productId, quantity) => {
         // pass these parameters to api and add to cart
-        const item = await commerce.cart.add(productId, quantity);
+        const { cart } = await commerce.cart.add(productId, quantity);
 
-        // calling setCart after item is added
-        setCart(item.cart);
+        // calling setCart with the API response cart object
+        setCart(cart);
+      }
+
+      // Async function used to update cart item quantities by passing a product ID and quantity
+      const handleUpdateCartQty = async (productId, quantity) => {
+        // storing API call response in cart object while passing product id and quantity
+        const { cart } = await commerce.cart.update(productId, { quantity });
+
+        // calling setCart with the API response cart object
+        setCart(cart);
+      }
+
+      // Async function used to remove items from the cart by passing a product ID
+      const handleRemoveFromCart = async (productId) => {
+        // Storing api call response that removed a certain product in cart object
+        const { cart } = await commerce.cart.remove(productId);
+
+        // calling setCart with the API response cart object
+        setCart(cart);
+      }
+
+      // Async function used to empty the cart object entirely
+      const handleEmptyCart = async () => {
+        // Storing api call response in the cart object
+        const { cart } = await commerce.cart.empty();
+
+        // calling setCart with the API response cart object
+        setCart(cart);
       }
 
       // use effect hook
@@ -50,7 +77,13 @@ const App = () => {
           <Navbar totalItems={cart.total_items} />
               <Routes>
                     <Route path='/' element={<Products products = {products} onAddToCart = {handleAddToCart}/>} />
-                    <Route path='/cart' element={<Cart cart={cart} />} />
+                    <Route path='/cart' element={<Cart cart={cart} 
+                    // passing functions to cart
+                    handleUpdateCartQty={handleUpdateCartQty}
+                    handleRemoveFromCart={handleRemoveFromCart}
+                    handleEmptyCart={handleEmptyCart}
+                    />} 
+                    />
                </Routes>  
       </div>
     </BrowserRouter>
