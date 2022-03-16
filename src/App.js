@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { commerce } from './lib/lightyourway';
-import { Products, Navbar, Cart } from './components';
+import { Products, Navbar, Cart, Checkout } from './components';
 import { BrowserRouter, Routes , Route } from 'react-router-dom';
 
 const App = () => {
@@ -76,13 +76,14 @@ const App = () => {
       <div>
           <Navbar totalItems={cart.total_items} />
               <Routes>
+                    <Route exact path='/Checkout' element={<Checkout />} />
                     <Route path='/' element={<Products products = {products} onAddToCart = {handleAddToCart}/>} />
                     <Route path='/cart' element={<Cart cart={cart} 
                     // passing functions to cart
                     handleUpdateCartQty={handleUpdateCartQty}
                     handleRemoveFromCart={handleRemoveFromCart}
                     handleEmptyCart={handleEmptyCart}
-                    />} 
+                    />}
                     />
                </Routes>  
       </div>
