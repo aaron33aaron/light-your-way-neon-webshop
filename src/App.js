@@ -76,7 +76,7 @@ const App = () => {
       <div>
           <Navbar totalItems={cart.total_items} />
               <Routes>
-                    <Route exact path='/Checkout' element={<Checkout />} />
+                    <Route exact path='/Checkout' element={<Checkout cart={cart}/>} />
                     <Route path='/' element={<Products products = {products} onAddToCart = {handleAddToCart}/>} />
                     <Route path='/cart' element={<Cart cart={cart} 
                     // passing functions to cart
