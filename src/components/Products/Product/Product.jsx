@@ -12,7 +12,7 @@ const Product = ({ product, onAddToCart }) => {
   return (
     <div>
         <Card className={classes.root}>
-            {/* Populating CardMedia with product information */}
+            {/* Populating CardMedia with product image */}
             <CardMedia className={classes.media} image={product.image.url} title={product.name} />
             <CardContent> 
                 <div className={classes.cardContent}>
