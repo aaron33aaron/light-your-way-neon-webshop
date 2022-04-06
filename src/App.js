@@ -5,8 +5,15 @@ import { BrowserRouter, Routes , Route } from 'react-router-dom';
 
 const App = () => {
     const [products, setProducts] = useState([]);
+
     // setting the cart as a object equal to empty object
     const [cart, setCart] = useState({});
+
+    //  setting the order as an empty object
+    const [order, setOrder] = useState({});
+
+    // setting errorMessage to empty string
+    const [errorMessage, setErrorMessage] = useState('');
 
     // async arrow function to fetch products 
     const fetchProducts = async () => {
@@ -59,6 +66,33 @@ const App = () => {
         setCart(cart);
       }
 
+      // refreshCart async function
+      const refreshCart = async () => {
+        // setting a newCart
+        const newCart = await commerce.cart.refresh();
+    
+        // calling setCart with API response cart object
+        setCart(newCart);
+      };
+
+      const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
+        try {
+          // fetch incoming order
+          const incomingOrder = await commerce.checkout.capture(checkoutTokenId, newOrder);
+    
+          // setOrder to the state
+          setOrder(incomingOrder);
+    
+          // calling refresh cart
+          refreshCart();
+        } catch (error) {
+          // setting the error message
+          setErrorMessage(error.data.error.message);
+        }
+      };
+
+      
+
       // use effect hook
       useEffect(() => {
         // calling fetch products function
@@ -76,7 +110,7 @@ const App = () => {
       <div>
           <Navbar totalItems={cart.total_items} />
               <Routes>
-                    <Route exact path='/Checkout' element={<Checkout cart={cart}/>} />
+                    <Route exact path='/Checkout' element={<Checkout cart={cart} order={order} onCaptureCheckout={handleCaptureCheckout} error={errorMessage }/>} />
                     <Route path='/' element={<Products products = {products} onAddToCart = {handleAddToCart}/>} />
                     <Route path='/cart' element={<Cart cart={cart} 
                     // passing functions to cart
