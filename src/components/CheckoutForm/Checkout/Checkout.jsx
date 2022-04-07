@@ -3,6 +3,7 @@ import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider,
 import useStyles from './styles';
 import AddressForm from '../AddressForm';
 import PaymentForm from '../PaymentForm';
+import { Link } from 'react-router-dom';
 // importing commerce as a named import
 import { commerce } from '../../../lib/lightyourway';
 
@@ -44,11 +45,21 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
 
 
-    const Confirmation = () => (
-        <div>
-            Confirmation
-        </div>
-    );
+  let Confirmation = () => (order.customer ? (
+    <>
+      <div>
+        <Typography variant="h5">Thank you for your purchase, {order.customer.firstname} {order.customer.lastname}!</Typography>
+        <Divider className={classes.divider} />
+        <Typography variant="subtitle2">Order ref: {order.customer_reference}</Typography>
+      </div>
+      <br />
+      <Button component={Link} variant="outlined" type="button" to="/">Back to home</Button>      
+    </>
+  ) : (
+    <div className={classes.spinner}>
+      <CircularProgress />
+    </div>
+  ));
 
     // if activestep is 0 then load address form
     const Form = () => activeStep === 0

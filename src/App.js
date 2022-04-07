@@ -73,7 +73,7 @@ const App = () => {
     
         // calling setCart with API response cart object
         setCart(newCart);
-      };
+      }
 
       const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
         try {
@@ -89,7 +89,7 @@ const App = () => {
           // setting the error message
           setErrorMessage(error.data.error.message);
         }
-      };
+      }
 
       
 
