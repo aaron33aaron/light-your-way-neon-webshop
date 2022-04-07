@@ -62,7 +62,7 @@ const PaymentForm = ({ checkoutToken, nextStep, backStep, shippingData, onCaptur
       <Elements stripe={stripePromise}>
         <ElementsConsumer>{({ elements, stripe }) => (
           <form onSubmit={(e) => handleSubmit(e, elements, stripe)}>
-            <CardElement />
+            <CardElement options={{ hidePostalCode: true }}/>
             <br /> <br />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Button variant="outlined" onClick={backStep}>Back</Button>
