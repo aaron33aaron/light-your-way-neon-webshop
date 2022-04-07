@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button } from '@material-ui/core'
+import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button, CssBaseline } from '@material-ui/core'
 import useStyles from './styles';
 import AddressForm from '../AddressForm';
 import PaymentForm from '../PaymentForm';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 // importing commerce as a named import
 import { commerce } from '../../../lib/lightyourway';
 
@@ -15,6 +15,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     const [shippingData, setShippingData] = useState({});
     const [activeStep, setActiveStep] = useState(0);
     const classes = useStyles();
+    const navigate = useNavigate();
 
     const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
     const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -28,7 +29,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     
               setCheckoutToken(token);
             } catch {
-
+              if (activeStep !== steps.length) navigate('/');
             }
           };
     
@@ -61,6 +62,17 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     </div>
   ));
 
+  // error handling
+  if (error) {
+    Confirmation = () => (
+      <>
+        <Typography variant="h5">Error: {error}</Typography>
+        <br />
+        <Button component={Link} variant="outlined" type="button" to="/">Back to home</Button>
+      </>
+    );
+  }
+
     // if activestep is 0 then load address form
     const Form = () => activeStep === 0
         ? <AddressForm checkoutToken={checkoutToken} next={next}/>
@@ -69,6 +81,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
   return (
     <>
+    <CssBaseline />
         <div className={classes.toolbar} />
         <main className={classes.layout}>
             <Paper className={classes.paper}>
